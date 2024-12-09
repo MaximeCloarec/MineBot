@@ -1,8 +1,11 @@
+const Vec3 = require("vec3");
+
 //Permet de trouver un maximum de 8 block contenant le mot "log" a une distance de 15 block autour de lui et renvoie un tableau de coordonée GPS (X,Y,Z)
-function find(bot, resource) {
-    const search = bot.findBlock({
+function find(bot, resource, count) {
+    const search = bot.findBlocks({
         matching: (block) => block.name.includes(resource),
         maxDistance: 15,
+        count: count,
     });
     return search;
 }
@@ -45,4 +48,16 @@ function checkRecipe(bot, resource) {
     return recipe;
 }
 
-module.exports = { find, digBlock, checkBlock, checkRecipe };
+async function putDown(bot) {
+    try {
+        await bot.placeBlock(
+            bot.blockAt(bot.entity.position.offset(0, 0, 1)),
+            new Vec3(0, 1, 0)
+        );
+        bot.world.blockUpdate(null, bot.entity.position.offset(0, 0, 1));
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = { find, digBlock, checkBlock, checkRecipe, putDown };

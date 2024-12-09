@@ -8,7 +8,7 @@ module.exports = {
     gather: (bot, args) => {
         const { gather } = require("./commands/gather");
         if (args.length > 0) {
-            gather(bot, args[0]);
+            gather(bot, args[0],args[1]);
         } else {
             bot.chat("Tu dois me dire quoi récupérer !");
         }
@@ -21,5 +21,13 @@ module.exports = {
             bot.chat("Tu doit me dire quoi crafter !");
         }
     },
+    place: (bot,args) => {
+        const {place } = require("./commands/place");
+        if (args.length > 0){
+            place(bot,args[0]);
+        }else{
+            bot.chat("Tu doit me dire quoi mettre au sol !")
+        }
+    }
     // Ajouter d'autres commandes ici...
 };

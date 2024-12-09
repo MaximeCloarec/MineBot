@@ -1,28 +1,21 @@
-const { find, checkBlock, digBlock } = require("../utils/block");
-const { goToBlock } = require("../utils/navigation");
+const { find } = require("../utils/block");
 
-async function gather(bot, resourceName) {
+async function gather(bot, resourceName, qty) {
+    const targets = [];
+    const blocks = find(bot, resourceName, qty);
+
+    for (let i = 0; i < Math.min(blocks.length, qty); i++) {
+        targets.push(bot.blockAt(blocks[i]));
+    }
+
     try {
-        const result = checkBlock(bot, resourceName);
-        if (!result || result.type !== "block") {
-            bot.chat("Je ne peux pas récolter cela !");
-            
-            return;
-        }
-        
-        const block = find(bot, resourceName);
-        if (!block) {
-            bot.chat("Aucun bloc correspondant trouvé à proximité.");
-            return;
-        }
+        await bot.collectBlock.collect(targets);
+        console.log(await bot.collectBlock.collect(targets));
 
-        await goToBlock(bot, block);
-        await digBlock(bot, block);
-        bot.chat(`J'ai collecté du ${resourceName} !`);
+        bot.chat("Terminé");
     } catch (err) {
         bot.chat("Une erreur est survenue lors de la collecte.");
         console.error(err);
     }
 }
-
 module.exports = { gather };
