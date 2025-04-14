@@ -1,6 +1,6 @@
-const { itemToString } = require("../utils/inventory");
+import { itemToString } from "../utils/inventory.js";
 
-function sayItems(bot) {
+export function sayItems(bot) {
     const items = bot.inventory.items();
 
     // Ajoute l'objet dans la main gauche si nécessaire
@@ -11,5 +11,3 @@ function sayItems(bot) {
     const output = Array.from(items).map(itemToString).join(", ");
     bot.chat(output || "empty");
 }
-
-module.exports = { sayItems };

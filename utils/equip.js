@@ -1,4 +1,4 @@
-async function equip(bot, args) {
+export async function equip(bot, args) {
     const mcData = require("minecraft-data")(bot.version);
     try {
         await bot.equip(mcData.itemsByName[args].id, "hand");
@@ -8,4 +8,3 @@ async function equip(bot, args) {
     return;
 }
 
-module.exports = { equip };

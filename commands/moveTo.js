@@ -1,6 +1,7 @@
-const { Movements, goals } = require("mineflayer-pathfinder");
+import pkg from "mineflayer-pathfinder";
+const { Movements, goals } = pkg;
 
-function getOverHere(bot) {
+export function getOverHere(bot) {
     const xylosil = bot.players["Xylosil"];
     console.log(xylosil);
 
@@ -22,5 +23,3 @@ function getOverHere(bot) {
         bot.chat("J'arrive !");
     }
 }
-
-module.exports = { getOverHere };

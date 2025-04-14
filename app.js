@@ -1,20 +1,28 @@
-const config = require("./config.json");
-const mineflayer = require("mineflayer");
+import config from "./config.json" assert { type: "json" };
 
-const { pathfinder } = require("mineflayer-pathfinder");
+import { createBot } from "mineflayer";
+import { loader as autoEat } from "mineflayer-auto-eat";
+import { plugin as collectBlockPlugin } from "mineflayer-collectblock";
 
-const bot = mineflayer.createBot({
-    host: config.host,
+import { pathfinder } from "mineflayer-pathfinder";
+
+const bot = createBot({
+    host: config.hosthost,
     port: config.port,
     username: config.username,
     hideErrors: false,
 });
 
-bot.loadPlugin(require("mineflayer-collectblock/lib").plugin);
+bot.loadPlugin(collectBlockPlugin);
 bot.loadPlugin(pathfinder);
+bot.loadPlugin(autoEat);
 
-const commands = require("./index");
+import commands from "./index.js";
+import stateChecks from "./stateChecks.js";
 
+bot.once("spawn", () => {
+    bot.autoEat.enableAuto();
+});
 
 bot.on("chat", async (username, message) => {
     const [command, ...args] = message.split(" ");
@@ -27,6 +35,10 @@ bot.on("chat", async (username, message) => {
     }
 });
 
+bot.on("health", () => {
+    stateChecks.checkHealth(bot);
+    stateChecks.checkFood(bot);
+});
 
 bot.on("kicked", (reason, loggedIn) => console.log(reason, loggedIn));
 bot.on("error", (err) => console.log(err));

@@ -6,11 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type":"module",
   "author": "",
   "license": "ISC",
   "dependencies": {
     "minecraft-data": "^3.78.0",
     "mineflayer": "^4.23.0",
+    "mineflayer-auto-eat": "^5.0.0",
     "mineflayer-collectblock": "github:PrismarineJS/mineflayer-collectblock",
     "mineflayer-pathfinder": "^2.4.5",
     "nodemon": "^3.1.7",

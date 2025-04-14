@@ -1,5 +1,5 @@
 //Utilise la position de coordonée du block pour se déplacer vers le block le plus proche
-async function goToBlock(bot, block) {
+export async function goToBlock(bot, block) {
     const mcData = require("minecraft-data")(bot.version);
     const { Movements, goals } = require("mineflayer-pathfinder");
 
@@ -22,5 +22,3 @@ async function goToBlock(bot, block) {
         });
     });
 }
-
-module.exports = { goToBlock };

@@ -1,7 +1,8 @@
-const Vec3 = require("vec3");
+import { Vec3 } from "vec3";
+import MinecraftData from "minecraft-data";
 
 //Permet de trouver un maximum de 8 block contenant le mot "log" a une distance de 15 block autour de lui et renvoie un tableau de coordonée GPS (X,Y,Z)
-function find(bot, resource, count) {
+export function find(bot, resource, count) {
     const search = bot.findBlocks({
         matching: (block) => block.name.includes(resource),
         maxDistance: 15,
@@ -10,7 +11,7 @@ function find(bot, resource, count) {
     return search;
 }
 
-async function digBlock(bot, resource) {
+export async function digBlock(bot, resource) {
     try {
         // Regarde le bloc pour commencer à le miner
         await bot.lookAt(resource.position.offset(0.5, 0.5, 0.5), true);
@@ -21,13 +22,12 @@ async function digBlock(bot, resource) {
     }
 }
 
-function checkBlock(bot, resource) {
-    const mcData = require("minecraft-data")(bot.version);
-    const item = mcData.itemsByName[resource];
-    const block = mcData.blocksByName[resource];
+export function checkBlock(bot, resource) {
+    // const mcData = require("minecraft-data")(bot.version);
+    const item = MinecraftData(bot.version).itemsByName[resource];
+    const block = MinecraftData(bot.version).blocksByName[resource];
 
     if (!item && !block) {
-        bot.chat(`Je ne connais pas la ressource : ${resource}`);
         return null;
     }
 
@@ -37,27 +37,41 @@ function checkBlock(bot, resource) {
         data: block || item,
     };
 }
-function checkRecipe(bot, resource) {
-    const mcData = require("minecraft-data")(bot.version);
-    const recipe = bot.recipesFor(
-        mcData.itemsByName[resource].id,
+
+export function checkRecipe(bot, resource) {
+    // const mcData = require("minecraft-data")(bot.version);
+    const recipe = bot.recipesAll(
+        MinecraftData(bot.version).itemsByName[resource].id,
         null,
         null,
         null
-    )[0];
+    );
     return recipe;
 }
 
-async function putDown(bot) {
+export function checkAvailable(bot, recipes) {
+    for (const recipe of recipes) {
+        // Vérifie chaque ingrédient nécessaire
+        const ingredients = recipe.delta.filter((item) => item.count < 0);
+        const hasAllIngredients = ingredients.every((ingredient) => {
+            const itemInInventory = bot.inventory.count(ingredient.id, null);
+            return itemInInventory >= Math.abs(ingredient.count);
+        });
+
+        if (hasAllIngredients) {
+            return recipe; // Retourne la première recette valide
+        }
+    }
+    return null; // Aucune recette disponible
+}
+
+export async function putDown(bot) {
     try {
         await bot.placeBlock(
             bot.blockAt(bot.entity.position.offset(0, 0, 1)),
             new Vec3(0, 1, 0)
         );
-        bot.world.blockUpdate(null, bot.entity.position.offset(0, 0, 1));
     } catch (err) {
         console.log(err);
     }
 }
-
-module.exports = { find, digBlock, checkBlock, checkRecipe, putDown };

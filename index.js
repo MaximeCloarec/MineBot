@@ -1,33 +1,40 @@
-module.exports = {
+import { sayItems } from "./commands/inventory.js";
+import { getOverHere } from "./commands/moveTo.js";
+import { gather } from "./commands/gather.js";
+import { craftResource } from "./commands/craft.js";
+import { place } from "./commands/place.js";
+
+export default {
     loaded: async (bot) => {
         await bot.waitForChunksToLoad();
         bot.chat("Ready");
     },
-    list: (bot) => require("./commands/inventory").sayItems(bot),
-    getOverHere: (bot) => require("./commands/moveTo").getOverHere(bot),
+
+    list: (bot) => sayItems(bot),
+
+    getOverHere: (bot) => getOverHere(bot),
+
     gather: (bot, args) => {
-        const { gather } = require("./commands/gather");
         if (args.length > 0) {
-            gather(bot, args[0],args[1]);
+            gather(bot, args[0], args[1]);
         } else {
             bot.chat("Tu dois me dire quoi récupérer !");
         }
     },
+
     craft: (bot, args) => {
-        const { craft } = require("./commands/craft");
         if (args.length > 0) {
-            craft(bot, args[0]);
+            craftResource(bot, args[0]);
         } else {
-            bot.chat("Tu doit me dire quoi crafter !");
+            bot.chat("Tu dois me dire quoi crafter !");
         }
     },
-    place: (bot,args) => {
-        const {place } = require("./commands/place");
-        if (args.length > 0){
-            place(bot,args[0]);
-        }else{
-            bot.chat("Tu doit me dire quoi mettre au sol !")
+
+    place: (bot, args) => {
+        if (args.length > 0) {
+            place(bot, args[0]);
+        } else {
+            bot.chat("Tu dois me dire quoi mettre au sol !");
         }
-    }
-    // Ajouter d'autres commandes ici...
+    },
 };

@@ -1,16 +1,15 @@
-const { find } = require("../utils/block");
+import { find } from "../utils/block.js";
 
-async function gather(bot, resourceName, qty) {
+export async function gather(bot, resourceName, qty) {
     const targets = [];
-    const blocks = find(bot, resourceName, qty);
 
+    const blocks = find(bot, resourceName, qty);
     for (let i = 0; i < Math.min(blocks.length, qty); i++) {
-        targets.push(bot.blockAt(blocks[i]));
+        targets.push(bot.blockAt(blocks[i])); 
     }
 
     try {
         await bot.collectBlock.collect(targets);
-        console.log(await bot.collectBlock.collect(targets));
 
         bot.chat("Terminé");
     } catch (err) {
@@ -18,4 +17,3 @@ async function gather(bot, resourceName, qty) {
         console.error(err);
     }
 }
-module.exports = { gather };
