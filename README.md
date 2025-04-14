@@ -27,6 +27,7 @@
 * │   ├── navigation.js # Utilitaires pour les déplacements
 * ├── index.js # Point d'entrée des commandes
 * ├── app.js # Script principal du bot
+* ├── stateChecks.js # Permet au bot de connaitre son status (faim,vie,ect)
 
 - **commands/** : Contient les actions principales que le bot peut exécuter.
 - **utils/** : Regroupe les fonctions utilitaires comme la gestion des blocs et des déplacements.
