@@ -2,7 +2,6 @@ import { checkBlock,checkRecipe,checkAvailable } from "../utils/block.js";
 import MinecraftData from "minecraft-data";
 
 export async function craftResource(bot, args) {
-    // const mcData = require("minecraft-data")(bot.version);
     // Vérifie si l'élément existe
     const result = checkBlock(bot, args);
     if (!result) {

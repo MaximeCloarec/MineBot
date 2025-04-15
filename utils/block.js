@@ -1,7 +1,6 @@
 import { Vec3 } from "vec3";
 import MinecraftData from "minecraft-data";
 
-//Permet de trouver un maximum de 8 block contenant le mot "log" a une distance de 15 block autour de lui et renvoie un tableau de coordonée GPS (X,Y,Z)
 export function find(bot, resource, count) {
     const search = bot.findBlocks({
         matching: (block) => block.name.includes(resource),
@@ -23,10 +22,8 @@ export async function digBlock(bot, resource) {
 }
 
 export function checkBlock(bot, resource) {
-    // const mcData = require("minecraft-data")(bot.version);
     const item = MinecraftData(bot.version).itemsByName[resource];
     const block = MinecraftData(bot.version).blocksByName[resource];
-
     if (!item && !block) {
         return null;
     }
@@ -39,13 +36,13 @@ export function checkBlock(bot, resource) {
 }
 
 export function checkRecipe(bot, resource) {
-    // const mcData = require("minecraft-data")(bot.version);
     const recipe = bot.recipesAll(
         MinecraftData(bot.version).itemsByName[resource].id,
         null,
         null,
-        null
+        bot.memory.craftingTable
     );
+    console.log(recipe,bot.memory.craftingTable);
     return recipe;
 }
 
