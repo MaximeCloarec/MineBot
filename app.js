@@ -1,5 +1,5 @@
 // Description: This is the main file for the bot. It loads the configuration, creates the bot instance, and sets up the commands and events.
-
+import repl from "repl";
 // Import the configuration file
 // Note: The config.json file should be in the same directory as this file
 import config from "./config.json" assert { type: "json" };
@@ -45,6 +45,8 @@ bot.once("spawn", async () => {
     initMemory(bot);
     await bot.waitForChunksToLoad(); 
     updateMemory(bot);
+    const r = repl.start("> ");
+    r.context.bot = bot
 });
 
 // Handle bot events

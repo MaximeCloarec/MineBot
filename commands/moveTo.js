@@ -1,16 +1,14 @@
 import pkg from "mineflayer-pathfinder";
+import MinecraftData from "minecraft-data";
 const { Movements, goals } = pkg;
 
 export function getOverHere(bot) {
     const xylosil = bot.players["Xylosil"];
-    console.log(xylosil);
 
     if (!xylosil.entity) {
         bot.chat("Je ne te trouve pas!");
     } else {
-        const mcData = require("minecraft-data")(bot.version);
-        const movements = new Movements(bot, mcData);
-        console.log(xylosil.entity.position.x);
+        const movements = new Movements(bot, MinecraftData(bot.version));
 
         const goal = new goals.GoalNear(
             xylosil.entity.position.x,

@@ -39,10 +39,8 @@ export function checkRecipe(bot, resource) {
     const recipe = bot.recipesAll(
         MinecraftData(bot.version).itemsByName[resource].id,
         null,
-        null,
-        bot.memory.craftingTable
+        bot.memory.craftingTable[0]
     );
-    console.log(recipe,bot.memory.craftingTable);
     return recipe;
 }
 
@@ -71,4 +69,28 @@ export async function putDown(bot) {
     } catch (err) {
         console.log(err);
     }
+}
+
+export function findMostDoableRecipe(bot, recipes) {
+    let bestRecipe = null;
+    let leastMissing = Infinity;
+
+    for (const recipe of recipes) {
+        const missing = recipe.delta.filter((item) => item.count < 0);
+        let totalMissing = 0;
+
+        for (const item of missing) {
+            const inventoryCount = bot.inventory.count(item.id, null);
+            totalMissing += Math.max(0, Math.abs(item.count) - inventoryCount);
+        }
+
+        if (totalMissing < leastMissing) {
+            leastMissing = totalMissing;
+            bestRecipe = recipe;
+        }
+
+        if (totalMissing === 0) return recipe;
+    }
+
+    return bestRecipe;
 }
