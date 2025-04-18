@@ -71,26 +71,48 @@ export async function putDown(bot) {
     }
 }
 
-export function findMostDoableRecipe(bot, recipes) {
-    let bestRecipe = null;
-    let leastMissing = Infinity;
-
-    for (const recipe of recipes) {
-        const missing = recipe.delta.filter((item) => item.count < 0);
-        let totalMissing = 0;
-
-        for (const item of missing) {
-            const inventoryCount = bot.inventory.count(item.id, null);
-            totalMissing += Math.max(0, Math.abs(item.count) - inventoryCount);
-        }
-
-        if (totalMissing < leastMissing) {
-            leastMissing = totalMissing;
-            bestRecipe = recipe;
-        }
-
-        if (totalMissing === 0) return recipe;
+export function getCraftingTable(bot) {
+    // Si une table est en mémoire
+    if (bot.memory?.craftingTable?.length) {
+        const pos = bot.memory.craftingTable[0];
+        const block = bot.blockAt(pos);
+        if (block && block.name === "crafting_table") return block;
     }
 
-    return bestRecipe;
+    // Sinon, on en cherche une autour
+    const table = bot.findBlock({
+        matching: (block) => block.name === "crafting_table",
+        maxDistance: 10,
+    });
+
+    if (table) {
+        bot.memory = bot.memory || {};
+        bot.memory.craftingTable = [table.position];
+        return table;
+    }
+
+    return null;
+}
+
+export function getFurnace(bot) {
+    // Si un four est en mémoire
+    if (bot.memory?.furnace?.length) {
+        const pos = bot.memory.furnace[0];
+        const block = bot.blockAt(pos);
+        if (block && block.name === "furnace") return block;
+    }
+
+    // Sinon, on en cherche un autour
+    const furnace = bot.findBlock({
+        matching: (block) => block.name === "furnace",
+        maxDistance: 10,
+    });
+
+    if (furnace) {
+        bot.memory = bot.memory || {};
+        bot.memory.furnace = [furnace.position];
+        return furnace;
+    }
+
+    return null;
 }

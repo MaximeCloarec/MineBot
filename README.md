@@ -25,9 +25,12 @@
 * ├── utils/
 * │   ├── block.js # Utilitaires pour gérer les blocs
 * │   ├── navigation.js # Utilitaires pour les déplacements
+* ├── memory/
+* │   ├── index.js # Centralise l'export des fonctions concernant la mémoire
+* │   ├── store.js # Initialise la mémoire du bot 
+* │   ├── update.js # Gère la mise a jour de sa mémoire
 * ├── index.js # Point d'entrée des commandes
 * ├── app.js # Script principal du bot
-* ├── stateChecks.js # Permet au bot de connaitre son status (faim,vie,ect)
 
 - **commands/** : Contient les actions principales que le bot peut exécuter.
 - **utils/** : Regroupe les fonctions utilitaires comme la gestion des blocs et des déplacements.
@@ -46,39 +49,37 @@
     npm install
 
 3. **Configurer le bot :** 
-   Assure-toi que ton serveur Minecraft est prêt et modifie le fichier app.js si nécessaire pour configurer l'adresse, le port et le pseudo du bot.
+   Assure-toi que ton serveur Minecraft est prêt et modifie le fichier config.json si nécessaire pour configurer l'adresse, le port et le pseudo du bot.
 
 ---
 
    🚨 Commandes Disponibles
 En jeu, tape une commande dans le chat pour interagir avec le bot :
 
-| Commande         |                            Description                            |
-| ---------------- | :---------------------------------------------------------------: |
-| loaded           | Indique que le bot est prêt une fois que les chunks sont chargés. |
-| list             |       Affiche la liste des objets dans l'inventaire du bot.       |
-| gather <res>     |    Collecte un type de ressource spécifique (ex. log, stone).     |
-| breakBlock <res> |               Casse un bloc spécifique à proximité.               |
-| find <res>       |              Trouve un bloc spécifique à proximité.               |
-| craft <res>      |                     Craft un bloc spécifique                      |
+| Commande     |                            Description                            |
+| ------------ | :---------------------------------------------------------------: |
+| loaded       | Indique que le bot est prêt une fois que les chunks sont chargés. |
+| list         |       Affiche la liste des objets dans l'inventaire du bot.       |
+| getOverHere  |   Permet au bot de se déplacer près de l'emplacement du joueur.   |
+| gather <res> |    Collecte un type de ressource spécifique (ex. log, stone).     |
+| craft <res>  |                     Craft un bloc spécifique                      |
+| place <res>  |                     Place un bloc spécifique                      |
 
 ---
 
 🛠️ Comment Ajouter de Nouvelles Commandes
-Crée un nouveau fichier dans src/commands (par exemple, example.js).
+Crée un nouveau fichier dans src/commands.
 Ajoute ta fonction dans le fichier :
 ```javascript
-module.exports = {
-    exampleCommand: (bot, args) => {
+export function test(bot){
         bot.chat("Ceci est une nouvelle commande !");
-    }
-};
+    };
 ```
 Mets à jour le fichier index.js :
 ```javascript
-module.exports = {
-    ...,
-    exampleCommand: (bot, args) => require("./commands/example").exampleCommand(bot, args),
-};
+import test from "iciVotreFichier"
+export default {
+    test: (bot) => test(bot)
+}
 ```
-Utilise la commande en jeu : exampleCommand.
+Utilise le mot clé en jeu : test.
