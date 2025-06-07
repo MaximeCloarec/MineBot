@@ -87,4 +87,4 @@ Utilise le mot clé en jeu : test.
 ---
 My Bot so far
 
-https://youtu.be/RS_Rml8ubvc
+[![My Bot So far](https://img.youtube.com/vi/RS_Rml8ubvc/0.jpg)](https://www.youtube.com/watch?v=RS_Rml8ubvc)
