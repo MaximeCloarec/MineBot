@@ -83,3 +83,8 @@ export default {
 }
 ```
 Utilise le mot clé en jeu : test.
+
+---
+My Bot so far
+
+https://youtu.be/RS_Rml8ubvc
